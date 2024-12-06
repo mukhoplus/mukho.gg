@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="match-stats" class="match-stats">
+      <!-- 매치 정보가 없을 때 -->
+      <div th:if="${matchInfo == null}" class="no-match-info">
+        <p>통계를 표시할 수 없습니다.</p>
+      </div>
+
+      <!-- 매치 정보가 있을 때 -->
+      <div
+        th:if="${matchInfo != null && matchInfo.info != null && matchInfo.info.participants != null}"
+      >
+        <!-- 딜량 차트 -->
+        <div class="stat-section">
+          <h3>챔피언 딜량</h3>
+          <div class="chart-container">
+            <canvas id="damageChart"></canvas>
+          </div>
+        </div>
+
+        <!-- CS 차트 -->
+        <div class="stat-section">
+          <h3>CS</h3>
+          <div class="chart-container">
+            <canvas id="csChart"></canvas>
+          </div>
+        </div>
+
+        <!-- 시야점수 차트 -->
+        <div class="stat-section">
+          <h3>시야 점수</h3>
+          <div class="chart-container">
+            <canvas id="visionChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        .match-stats {
+          padding: 1rem;
+        }
+
+        .stat-section {
+          background: white;
+          border-radius: 8px;
+          padding: 1.5rem;
+          margin-bottom: 2rem;
+        }
+
+        .chart-container {
+          height: 300px;
+          margin-top: 1rem;
+        }
+
+        h3 {
+          color: #333;
+          margin-bottom: 1rem;
+        }
+      </style>
+
+      <script th:inline="javascript">
+        // 차트 데이터 가져오기
+        const participants = /*[[${matchInfo.info.participants}]]*/ [];
+
+        // 딜량 차트
+        new Chart(document.getElementById("damageChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map((p) => p.summonerName),
+            datasets: [
+              {
+                label: "챔피언 딜량",
+                data: participants.map((p) => p.totalDamageDealtToChampions),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          },
+        });
+
+        // CS 차트
+        new Chart(document.getElementById("csChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map((p) => p.summonerName),
+            datasets: [
+              {
+                label: "CS",
+                data: participants.map((p) => p.totalMinionsKilled),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          },
+        });
+
+        // 시야점수 차트
+        new Chart(document.getElementById("visionChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map((p) => p.summonerName),
+            datasets: [
+              {
+                label: "시야 점수",
+                data: participants.map((p) => p.visionScore),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          },
+        });
+      </script>
+    </div>
+  </body>
+</html>

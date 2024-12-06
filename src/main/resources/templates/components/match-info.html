@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div
+      th:if="${summonerInfo != null}"
+      th:fragment="match-info"
+      class="match-info"
+    >
+      <!-- 매치 정보가 없을 때 -->
+      <div th:if="${matchInfo == null}" class="no-match-info">
+        <p>최근 매치 정보가 없습니다.</p>
+      </div>
+
+      <!-- 매치 정보가 있을 때 -->
+      <div th:if="${matchInfo != null}" class="match-content">
+        <!-- 매치 기본 정보 -->
+        <div class="match-header">
+          <div class="game-type" th:text="${matchInfo.info.queueId}">
+            게임 타입
+          </div>
+          <div
+            class="game-time"
+            th:text="${#dates.format(new java.util.Date(matchInfo.info.gameStartTimestamp), 'yyyy/MM/dd HH:mm')}"
+          >
+            시간
+          </div>
+          <div
+            class="game-length"
+            th:text="${matchInfo.info.gameDuration / 60 + '분'}"
+          >
+            게임 시간
+          </div>
+        </div>
+
+        <div class="teams-container">
+          <div>
+            <div
+              th:replace="~{components/team-info :: teamInfo(teamId=100, team=${matchInfo.info.teams[0]}, participants=${matchInfo.info.participants}, teamGold=${blueTeamGold})}"
+            ></div>
+          </div>
+          <div>
+            <div
+              th:replace="~{components/team-info :: teamInfo(teamId=200, team=${matchInfo.info.teams[1]}, participants=${matchInfo.info.participants}, teamGold=${redTeamGold})}"
+            ></div>
+          </div>
+        </div>
+
+        <style>
+          .match-info {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 1rem 0;
+            padding: 1rem;
+          }
+
+          .match-header {
+            display: flex;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+          }
+
+          .teams-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+          }
+
+          .team {
+            padding: 1rem;
+            border-radius: 4px;
+          }
+
+          .blue-team {
+            background: rgba(83, 131, 232, 0.05);
+          }
+
+          .red-team {
+            background: rgba(232, 83, 83, 0.05);
+          }
+
+          .team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+          }
+
+          .participant {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid #eee;
+            gap: 1rem;
+          }
+
+          .position-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+          }
+
+          .position-image {
+            width: 100%;
+            height: 100%;
+          }
+
+          .champion-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+
+          .champion-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+          }
+
+          .spells,
+          .runes {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+          }
+
+          .spell-image,
+          .rune-image {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+          }
+
+          .player-info {
+            flex: 1;
+          }
+
+          .summoner-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+          }
+
+          .kda {
+            color: #666;
+            font-size: 0.9rem;
+          }
+
+          .details {
+            display: flex;
+            gap: 12px;
+            color: #666;
+            font-size: 0.8rem;
+          }
+
+          .items {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            max-width: 180px;
+          }
+
+          .item-image {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+          }
+
+          .ward-image {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            border: 1px solid #ffd700;
+          }
+
+          .damage-info {
+            width: 120px;
+          }
+
+          .damage-bar {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            overflow: hidden;
+          }
+
+          .damage-fill {
+            height: 100%;
+            background: #5383e8;
+          }
+
+          .damage-text {
+            font-size: 0.8rem;
+            color: #666;
+          }
+        </style>
+      </div>
+    </div>
+  </body>
+</html>

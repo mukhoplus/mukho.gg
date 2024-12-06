@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <header th:fragment="header" class="header">
+      <div class="header-container">
+        <div class="logo">
+          <a th:href="@{/}" class="link"><h1 class="no-select">MUKHO.GG</h1></a>
+        </div>
+        <div class="search-container">
+          <form action="/search" method="get" class="search-form">
+            <input
+              type="text"
+              name="summoner"
+              placeholder="소환사명#태그"
+              class="search-input"
+              required
+            />
+            <button type="submit" class="search-button">
+              <p class="no-select">검색</p>
+            </button>
+          </form>
+        </div>
+      </div>
+      <style>
+        .no-select {
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+        .link {
+          text-decoration: none;
+          color: inherit;
+        }
+        .header {
+          background: white;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1000;
+        }
+        .header-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 1rem 2rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .search-form {
+          display: flex;
+          gap: 0.5rem;
+        }
+        .search-input {
+          width: 300px;
+          padding: 0.5rem 1rem;
+          border: 1px solid #e0e0e0;
+          border-radius: 4px;
+        }
+        .search-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          background: #5383e8;
+          color: white;
+          border: none;
+          border-radius: 10%;
+          cursor: pointer;
+        }
+        .search-button:hover {
+          background: #4070d0;
+        }
+        .search-button i {
+          color: white;
+          font-size: 16px;
+        }
+      </style>
+    </header>
+  </body>
+</html>
