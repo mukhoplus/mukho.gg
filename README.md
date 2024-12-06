@@ -42,18 +42,30 @@ com.mukho.mukhogg/
 ├── service/
 │   ├── MukhoggService.java (인터페이스)
 │   └── impl/
-│       └── MukhoggServiceImpl.java (Riot API 호출 구현)
+│       └── MukhoggServiceImpl.java (서비스 호출 구현)
 ├── dto/
-│   ├── account/
-│   │   └── AccountDto.java (소환사 정보 DTO)
+│   ├── account/  (소환사 정보 DTO)
+│   │   └── AccountDto.java
+│   │   └── ...
 │   └── matches/
-│       ├── match/
-│       │   └── MatchDto.java (매치 정보 DTO)
-│       └── timeline/
-│           └── TimelineDto.java (타임라인 정보 DTO)
+│       ├── match/ (매치 정보 DTO)
+│       │   └── MatchDto.java
+│       │   └── ...
+│       └── timeline/ (타임라인 정보 DTO)
+│           └── TimelineDto.java
+│           └── ...
+├── dto/
+│   ├── DataDragonUtil.java (이미지 API 호출 Util)
+│   └── DataMappingUtil.java (이미지 정보 매핑 Util)
 └── resources/
     ├── templates/
     │   └── main.html (메인 페이지 템플릿)
+    │   └── components/
+    │       ├── header.html (로고 및 검색창 표시 템플릿)
+    │       ├── empty-state.html (첫 화면용 템플릿)
+    │       ├── match-info.html (매치 정보 표시 템플릿)
+    │       ├── team-info.html (팀별 정보 표시 템플릿)
+    │       └── match-stats.html (통계 정보 표시 템플릿)
     ├── application.properties
     └── apikey.properties (Riot API 키 설정)
 ```
