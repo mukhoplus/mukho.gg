@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.mukho.mukhogg.dto.account.AccountDto;
+import com.mukho.mukhogg.dto.matches.match.InfoDto;
 import com.mukho.mukhogg.dto.matches.match.MatchDto;
+import com.mukho.mukhogg.dto.matches.match.ParticipantDto;
 import com.mukho.mukhogg.dto.matches.timeline.TimelineDto;
 import com.mukho.mukhogg.service.MukhoggService;
 
@@ -68,6 +70,19 @@ public class MukhoggServiceImpl implements MukhoggService{
         }
         
         return timelineInfo;
+    }
+
+    @Override
+    public String getTotalGold(List<ParticipantDto> participants, int teamId) {
+        int totalGold = 0;
+
+        for (ParticipantDto participant : participants) {
+            if (participant.getTeamId() == teamId) {
+                totalGold += participant.getGoldEarned();
+            }
+        }
+
+        return String.format("%.1f K", totalGold / 1_000.0);
     }
 
     private List<String> getMatchIds(String puuid) {

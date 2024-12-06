@@ -23,11 +23,18 @@ public class MukhoggController {
         model.addAttribute("summonerInfo", null);
         model.addAttribute("matchInfo", null);
         model.addAttribute("timelineInfo", null);
+        model.addAttribute("blueTeamGold", 0);
+        model.addAttribute("redTeamGold", 0);
         return "main";
     }
 
     @GetMapping("/search")
     public String searchSummoner(@RequestParam String summoner, Model model) {
+        if (!summoner.matches("^[a-zA-Z0-9가-힣\\s]+#[a-zA-Z0-9가-힣]+$")) {
+            model.addAttribute("error", "소환사명#태그 형식으로 입력해주세요");
+            return "main";
+        }
+
         try {
             AccountDto summonerInfo = mukhoggService.getSummonerInfo(summoner);
             model.addAttribute("summonerInfo", summonerInfo);
@@ -39,11 +46,18 @@ public class MukhoggController {
             String matchId = matchInfo.getMetadata().getMatchId();
             TimelineDto timelineInfo = mukhoggService.getTimelineDto(matchId);
             model.addAttribute("timelineInfo", timelineInfo);
+
+            String blueTeamGold = mukhoggService.getTotalGold(matchInfo.getInfo().getParticipants(), 100);
+            String redTeamGold = mukhoggService.getTotalGold(matchInfo.getInfo().getParticipants(), 200);
+            model.addAttribute("blueTeamGold", blueTeamGold);
+            model.addAttribute("redTeamGold", redTeamGold);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             model.addAttribute("summonerInfo", null);
             model.addAttribute("matchInfo", null);
             model.addAttribute("timelineInfo", null);
+            model.addAttribute("blueTeamGold", 0);
+            model.addAttribute("redTeamGold", 0);
             model.addAttribute("error", "소환사를 찾을 수 없습니다.");
         }
         
