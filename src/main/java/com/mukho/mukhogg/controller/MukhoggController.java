@@ -41,6 +41,10 @@ public class MukhoggController {
             model.addAttribute("timelineInfo", timelineInfo);
         } catch (Exception e) {
             System.err.println(e.getMessage());
+            model.addAttribute("summonerInfo", null);
+            model.addAttribute("matchInfo", null);
+            model.addAttribute("timelineInfo", null);
+            model.addAttribute("error", "소환사를 찾을 수 없습니다.");
         }
         
         return "main";
