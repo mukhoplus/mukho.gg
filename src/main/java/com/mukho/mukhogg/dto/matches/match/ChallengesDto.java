@@ -81,7 +81,7 @@ public class ChallengesDto {
     int killedChampTookFullTeamDamageSurvived;
     int killingSprees;
     float killParticipation;
-int killsNearEnemyTurret;
+    int killsNearEnemyTurret;
     int killsOnOtherLanesEarlyJungleAsLaner;
     int killsOnRecentlyHealedByAramPack;
     int killsUnderOwnTurret;
