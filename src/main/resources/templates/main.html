@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>소환사 검색</title>
+    <style>
+      /* 간단한 스타일 추가 */
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>소환사 검색</h1>
+      <form action="/search" method="get">
+        <label for="summoner">소환사명:</label>
+        <input type="text" id="summoner" name="summoner" required />
+        <button type="submit">검색</button>
+      </form>
+
+      <div th:if="${summonerInfo == null}">
+        <h2>검색 결과가 없습니다.</h2>
+        <p>소환사명을 입력하고 검색 버튼을 눌러주세요.</p>
+      </div>
+
+      <div th:if="${matchInfo != null && matchInfo.info != null}">
+        <h2>매치 정보</h2>
+        <div th:with="info=${matchInfo.info}">
+          <p>게임 모드: <span th:text="${info.gameMode}">-</span></p>
+          <p>게임 시간: <span th:text="${info.gameDuration}">-</span></p>
+
+          <!-- 참가자 정보가 있다면 -->
+          <div th:if="${info.participants != null}">
+            <h3>참가자 정보</h3>
+            <ul>
+              <li th:each="participant : ${info.participants}">
+                <span th:text="${participant.summonerName}">-</span>
+                (<span th:text="${participant.championName}">-</span>)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

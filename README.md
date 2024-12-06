@@ -32,3 +32,28 @@
 - 매치 지표에 대한 다양한 그래프 정보 제공
 - 매치 시간대별 킬, 타워, 오브젝트 정보와 골드 차이를 보여주는 그래프 제공
   - 어떤 시간대에 매치의 유불리가 가장 크게 변화하였는지 텍스트로 제공
+
+## 프로젝트 구조
+
+```
+com.mukho.mukhogg/
+├── controller/
+│   └── MukhoggController.java (소환사 검색 및 매치 정보 조회 컨트롤러)
+├── service/
+│   ├── MukhoggService.java (인터페이스)
+│   └── impl/
+│       └── MukhoggServiceImpl.java (Riot API 호출 구현)
+├── dto/
+│   ├── account/
+│   │   └── AccountDto.java (소환사 정보 DTO)
+│   └── matches/
+│       ├── match/
+│       │   └── MatchDto.java (매치 정보 DTO)
+│       └── timeline/
+│           └── TimelineDto.java (타임라인 정보 DTO)
+└── resources/
+    ├── templates/
+    │   └── main.html (메인 페이지 템플릿)
+    ├── application.properties
+    └── apikey.properties (Riot API 키 설정)
+```

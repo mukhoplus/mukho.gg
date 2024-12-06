@@ -7,5 +7,5 @@ import com.mukho.mukhogg.dto.matches.timeline.TimelineDto;
 public interface MukhoggService {
     AccountDto getSummonerInfo(String summoner);
     MatchDto getMatchInfo(String puuid);
-    TimelineDto getTimelineDto(String puuid);
+    TimelineDto getTimelineDto(String matchId);
 }
