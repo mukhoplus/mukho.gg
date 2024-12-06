@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class MatchDto {
-    MetadataDto metadataDto;
-    InfoDto infoDto;
+    MetadataDto metadata;
+    InfoDto info;
 }
