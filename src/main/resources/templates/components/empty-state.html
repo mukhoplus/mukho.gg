@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div
+      th:if="${summonerInfo == null}"
+      th:fragment="empty-state"
+      class="empty-state"
+    >
+      <div class="empty-state-container">
+        <i class="fas fa-search fa-3x"></i>
+        <h2>소환사를 검색해보세요</h2>
+        <p th:if="${error}" th:text="${error}" class="error-message"></p>
+      </div>
+      <style>
+        .empty-state {
+          text-align: center;
+          padding: 4rem 0;
+        }
+        .empty-state-container {
+          max-width: 400px;
+          margin: 0 auto;
+        }
+        .fa-search {
+          color: #5383e8;
+          margin-bottom: 1rem;
+        }
+        .error-message {
+          color: #ff5555;
+          margin-top: 1rem;
+        }
+      </style>
+    </div>
+  </body>
+</html>

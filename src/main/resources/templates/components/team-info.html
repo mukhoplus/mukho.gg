@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div th:fragment="teamInfo(teamId, team, participants, teamGold)">
+      <div class="team" th:class="${teamId == 100 ? 'blue-team' : 'red-team'}">
+        <div class="team-header">
+          <h3 th:text="${teamId == 100 ? '블루팀' : '레드팀'}"></h3>
+          <div class="team-info">
+            <div class="team-stats">
+              <div class="objective">
+                <span>타워 처치:</span>
+                <span th:text="${team.objectives.tower.kills}">0</span>
+              </div>
+              <div class="objective">
+                <span>용 처치:</span>
+                <span th:text="${team.objectives.dragon.kills}">0</span>
+              </div>
+              <div class="objective">
+                <span>바론 처치:</span>
+                <span th:text="${team.objectives.baron.kills}">0</span>
+              </div>
+              <div class="objective">
+                <span>팀 골드:</span>
+                <span th:text="${teamGold}">0</span>
+              </div>
+              <div class="objective">
+                <span th:text="${team.objectives.champion.kills}">0</span
+                ><span>킬</span>
+              </div>
+              <div class="objective">
+                <span th:text="${team.win ? '승리' : '패배'}">승리</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="participants">
+          <div
+            th:each="participant : ${participants}"
+            th:if="${participant.teamId == teamId}"
+            class="participant"
+          >
+            <!-- 라인 아이콘 -->
+            <div class="position-icon">
+              <img
+                th:src="${@dataDragonUtil.getLaneImageUrl(participant.teamPosition)}"
+                class="position-image"
+              />
+            </div>
+
+            <!-- 챔피언 정보 -->
+            <div class="champion-info">
+              <img
+                th:src="${@dataDragonUtil.getChampionImageUrl(participant.championName)}"
+                class="champion-image"
+              />
+              <div class="spells">
+                <img
+                  th:src="${@dataDragonUtil.getSpellImageUrl(participant.summoner1Id)}"
+                  class="spell-image"
+                />
+                <img
+                  th:src="${@dataDragonUtil.getSpellImageUrl(participant.summoner2Id)}"
+                  class="spell-image"
+                />
+              </div>
+              <div class="runes">
+                <img
+                  th:src="${@dataDragonUtil.getRuneImageUrl(participant.perks.styles[0].selections[0].perk)}"
+                  class="rune-image"
+                />
+                <img
+                  th:src="${@dataDragonUtil.getSubRuneImageUrl(participant.perks.styles[1].style)}"
+                  class="rune-image"
+                />
+              </div>
+            </div>
+
+            <!-- 플레이어 정보 -->
+            <div class="player-info">
+              <span
+                class="summoner-name"
+                th:text="${participant.riotIdGameName + '#' + participant.riotIdTagline}"
+                >소환사명</span
+              >
+              <div class="kda">
+                <span th:text="${participant.kills}">0</span> /
+                <span th:text="${participant.deaths}">0</span> /
+                <span th:text="${participant.assists}">0</span>
+              </div>
+              <div class="details">
+                <span
+                  class="cs"
+                  th:text="${participant.totalMinionsKilled + participant.neutralMinionsKilled + ' CS'}"
+                  >0 CS</span
+                >
+                <span
+                  class="gold"
+                  th:text="${#numbers.formatInteger(participant.goldEarned / 1000, 1, 'COMMA') + 'k'}"
+                  >0k</span
+                >
+              </div>
+            </div>
+
+            <!-- 아이템 빌드 -->
+            <div class="items">
+              <img
+                th:if="${participant.item0}"
+                th:src="${@dataDragonUtil.getItemImageUrl(participant.item0)}"
+                class="item-image"
+              />
+              <img
+                th:if="${participant.item1}"
+                th:src="${@dataDragonUtil.getItemImageUrl(participant.item1)}"
+                class="item-image"
+              />
+              <img
+                th:if="${participant.item2}"
+                th:src="${@dataDragonUtil.getItemImageUrl(participant.item2)}"
+                class="item-image"
+              />
+              <img
+                th:if="${participant.item3}"
+                th:src="${@dataDragonUtil.getItemImageUrl(participant.item3)}"
+                class="item-image"
+              />
+              <img
+                th:if="${participant.item4}"
+                th:src="${@dataDragonUtil.getItemImageUrl(participant.item4)}"
+                class="item-image"
+              />
+              <img
+                th:if="${participant.item5}"
+                th:src="${@dataDragonUtil.getItemImageUrl(participant.item5)}"
+                class="item-image"
+              />
+              <img
+                th:if="${participant.item6}"
+                th:src="${@dataDragonUtil.getItemImageUrl(participant.item6)}"
+                class="ward-image"
+              />
+            </div>
+
+            <!-- 데미지 정보 -->
+            <div class="damage-info">
+              <span
+                class="damage-text"
+                th:text="${#numbers.formatInteger(participant.totalDamageDealtToChampions, 1, 'COMMA')}"
+                >0</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
