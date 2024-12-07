@@ -50,7 +50,7 @@ public class MukhoggController {
             model.addAllAttributes(calculateTeamStats(participants));
         } catch (Exception e) {
             String errMsg = e.getMessage();
-            System.out.println(e.getMessage());
+            
             if (errMsg.contains("\"matchInfo\" is null")) {
                 model.addAttribute("error", "최근 매치 기록이 없습니다.");
             } else if (errMsg.contains("\"summonerInfo\" is null")) {
