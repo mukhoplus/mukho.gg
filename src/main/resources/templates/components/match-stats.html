@@ -15,8 +15,8 @@
       <!-- 매치 정보가 있을 때 -->
       <div
         th:if="${matchInfo != null && matchInfo.info != null && matchInfo.info.participants != null}"
+        class="stats"
       >
-        <!-- 딜량 차트 -->
         <div class="stat-section">
           <h3>챔피언 딜량</h3>
           <div class="chart-container">
@@ -24,7 +24,13 @@
           </div>
         </div>
 
-        <!-- CS 차트 -->
+        <div class="stat-section">
+          <h3>골드 획득량</h3>
+          <div class="chart-container">
+            <canvas id="goldChart"></canvas>
+          </div>
+        </div>
+
         <div class="stat-section">
           <h3>CS</h3>
           <div class="chart-container">
@@ -32,18 +38,65 @@
           </div>
         </div>
 
-        <!-- 시야점수 차트 -->
         <div class="stat-section">
-          <h3>시야 점수</h3>
+          <h3>킬</h3>
           <div class="chart-container">
-            <canvas id="visionChart"></canvas>
+            <canvas id="killChart"></canvas>
+          </div>
+        </div>
+
+        <div class="stat-section">
+          <h3>데스</h3>
+          <div class="chart-container">
+            <canvas id="deathChart"></canvas>
+          </div>
+        </div>
+
+        <div class="stat-section">
+          <h3>어시스트</h3>
+          <div class="chart-container">
+            <canvas id="assistChart"></canvas>
+          </div>
+        </div>
+
+        <div class="stat-section">
+          <h3>와드 설치</h3>
+          <div class="chart-container">
+            <canvas id="wardPlacedChart"></canvas>
+          </div>
+        </div>
+
+        <div class="stat-section">
+          <h3>와드 제거</h3>
+          <div class="chart-container">
+            <canvas id="wardRemovedChart"></canvas>
+          </div>
+        </div>
+
+        <div class="stat-section">
+          <h3>제어 와드 구매</h3>
+          <div class="chart-container">
+            <canvas id="controlWardChart"></canvas>
+          </div>
+        </div>
+
+        <div class="stat-section">
+          <h3>레벨</h3>
+          <div class="chart-container">
+            <canvas id="levelChart"></canvas>
           </div>
         </div>
       </div>
-
       <style>
         .match-stats {
           padding: 1rem;
+        }
+
+        .stats {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px;
         }
 
         .stat-section {
@@ -51,6 +104,10 @@
           border-radius: 8px;
           padding: 1.5rem;
           margin-bottom: 2rem;
+          display: inline-block;
+          width: calc(50% - 10%);
+          height: 400px;
+          box-sizing: border-box;
         }
 
         .chart-container {
@@ -63,16 +120,95 @@
           margin-bottom: 1rem;
         }
       </style>
-
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
       <script th:inline="javascript">
         // 차트 데이터 가져오기
         const participants = /*[[${matchInfo.info.participants}]]*/ [];
+
+        // DataDragonUtil의 메서드
+        const getChampionImageUrl = (championName) => {
+          return `https://ddragon.leagueoflegends.com/cdn/14.23.1/img/champion/${championName}.png`;
+        };
+
+        // championImages를 소환사명#태그와 연결
+        const championImages = {};
+        participants.forEach((participant) => {
+          const summoner = `${participant.riotIdGameName}#${participant.riotIdTagline}`;
+          championImages[summoner] = {
+            name: participant.championName,
+            imageUrl: getChampionImageUrl(participant.championName),
+          };
+        });
+
+        // 커스텀 플러그인
+        const imageLabelPlugin = {
+          id: "imageLabelPlugin",
+          afterDraw: (chart) => {
+            const ctx = chart.ctx;
+
+            chart.data.labels.forEach((label, index) => {
+              const championData = championImages[label];
+              if (championData) {
+                const img = new Image();
+                img.src = championData.imageUrl;
+                img.onload = () => {
+                  const imgWidth = 20;
+                  const imgHeight = 20;
+                  const x =
+                    chart.getDatasetMeta(0).data[index].x - imgWidth / 2;
+                  const y = chart.chartArea.bottom + 5;
+
+                  ctx.drawImage(img, x, y, imgWidth, imgHeight);
+                };
+              } else {
+                console.error(`Champion data not found for label: ${label}`);
+              }
+            });
+          },
+        };
+
+        // 공통 options 객체 정의
+        const commonOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: {
+              bottom: 30,
+            },
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              enabled: false,
+            },
+            datalabels: {
+              anchor: "end",
+              align: "bottom",
+              formatter: (value) => value,
+            },
+          },
+          scales: {
+            x: {
+              ticks: {
+                display: false,
+              },
+            },
+            y: {
+              beginAtZero: true,
+            },
+          },
+        };
 
         // 딜량 차트
         new Chart(document.getElementById("damageChart"), {
           type: "bar",
           data: {
-            labels: participants.map((p) => p.summonerName),
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
             datasets: [
               {
                 label: "챔피언 딜량",
@@ -85,22 +221,40 @@
               },
             ],
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
+        });
+
+        // 골드 획득량 차트
+        new Chart(document.getElementById("goldChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
+            datasets: [
+              {
+                label: "골드 획득량",
+                data: participants.map((p) => p.goldEarned),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
               },
-            },
+            ],
           },
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
         });
 
         // CS 차트
         new Chart(document.getElementById("csChart"), {
           type: "bar",
           data: {
-            labels: participants.map((p) => p.summonerName),
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
             datasets: [
               {
                 label: "CS",
@@ -113,26 +267,21 @@
               },
             ],
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
-          },
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
         });
 
-        // 시야점수 차트
-        new Chart(document.getElementById("visionChart"), {
+        // 킬 차트
+        new Chart(document.getElementById("killChart"), {
           type: "bar",
           data: {
-            labels: participants.map((p) => p.summonerName),
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
             datasets: [
               {
-                label: "시야 점수",
-                data: participants.map((p) => p.visionScore),
+                label: "킬",
+                data: participants.map((p) => p.kills),
                 backgroundColor: participants.map((p) =>
                   p.teamId === 100
                     ? "rgba(83, 131, 232, 0.5)"
@@ -141,15 +290,146 @@
               },
             ],
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
+        });
+
+        // 데스 차트
+        new Chart(document.getElementById("deathChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
+            datasets: [
+              {
+                label: "데스",
+                data: participants.map((p) => p.deaths),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
               },
-            },
+            ],
           },
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
+        });
+
+        // 어시스트 차트
+        new Chart(document.getElementById("assistChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
+            datasets: [
+              {
+                label: "어시스트",
+                data: participants.map((p) => p.assists),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
+              },
+            ],
+          },
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
+        });
+
+        // 와드 설치 차트
+        new Chart(document.getElementById("wardPlacedChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
+            datasets: [
+              {
+                label: "와드 설치",
+                data: participants.map((p) => p.wardsPlaced),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
+              },
+            ],
+          },
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
+        });
+
+        // 와드 제거 차트
+        new Chart(document.getElementById("wardRemovedChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
+            datasets: [
+              {
+                label: "와드 제거",
+                data: participants.map((p) => p.wardsKilled),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
+              },
+            ],
+          },
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
+        });
+
+        // 제어 와드 구매 차트
+        new Chart(document.getElementById("controlWardChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
+            datasets: [
+              {
+                label: "제어 와드 구매",
+                data: participants.map((p) => p.challenges.controlWardsPlaced),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
+              },
+            ],
+          },
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
+        });
+
+        // 레벨 차트
+        new Chart(document.getElementById("levelChart"), {
+          type: "bar",
+          data: {
+            labels: participants.map(
+              (p) => `${p.riotIdGameName}#${p.riotIdTagline}`
+            ),
+            datasets: [
+              {
+                label: "레벨",
+                data: participants.map((p) => p.champLevel),
+                backgroundColor: participants.map((p) =>
+                  p.teamId === 100
+                    ? "rgba(83, 131, 232, 0.5)"
+                    : "rgba(232, 83, 83, 0.5)"
+                ),
+              },
+            ],
+          },
+          options: { ...commonOptions },
+          plugins: [imageLabelPlugin, ChartDataLabels],
         });
       </script>
     </div>
