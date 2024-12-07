@@ -79,7 +79,7 @@ com.mukho.mukhogg/
 
 ### 메인 화면
 
-![메인 화면](https://github.com/user-attachments/assets/114088d4-0002-4c75-9af2-311d497b116c)
+![메인 화면](https://github.com/user-attachments/assets/d14020e4-5c82-46b9-a44c-1e42e6be7355)
 
 ### 아이디 형식 오류
 
