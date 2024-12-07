@@ -2,9 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <body>
     <div
+      id="matchInfo"
       th:if="${summonerInfo != null}"
       th:fragment="match-info"
-      class="match-info"
+      class="match-info tab-content-item active"
     >
       <!-- 매치 정보가 없을 때 -->
       <div th:if="${matchInfo == null}" class="no-match-info">

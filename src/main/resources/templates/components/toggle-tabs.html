@@ -1,0 +1,20 @@
+<div class="tab-container" th:fragment="toggle-tabs">
+  <div th:if="${summonerInfo != null && matchInfo != null}" class="tab-header">
+    <button
+      id="matchInfoBtn"
+      class="tab-button active"
+      onclick="showTab('matchInfo')"
+    >
+      매치
+    </button>
+    <button
+      id="matchStatsBtn"
+      class="tab-button"
+      onclick="showTab('matchStats')"
+    >
+      통계
+    </button>
+  </div>
+  <div th:replace="~{components/match-info :: match-info}"></div>
+  <div th:replace="~{components/match-stats :: match-stats}"></div>
+</div>
