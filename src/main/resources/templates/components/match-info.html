@@ -13,25 +13,25 @@
 
       <!-- 매치 정보가 있을 때 -->
       <div th:if="${matchInfo != null}" class="match-content">
-        <!-- 매치 기본 정보 -->
         <div class="match-header">
           <div class="game-type" th:text="${gameType[matchInfo.info.queueId]}">
             게임 타입
           </div>
-          <div
-            class="game-time"
-            th:text="${#dates.format(new java.util.Date(matchInfo.info.gameStartTimestamp), 'yyyy/MM/dd HH:mm')}"
-          >
-            시간
-          </div>
-          <div
-            class="game-length"
-            th:text="${matchInfo.info.gameDuration / 60 + '분'}"
-          >
-            게임 시간
+          <div class="game-time-container">
+            <div
+              class="game-time"
+              th:text="${#dates.format(new java.util.Date(matchInfo.info.gameStartTimestamp), 'yyyy/MM/dd HH:mm')}"
+            >
+              시간
+            </div>
+            <div
+              class="game-length"
+              th:text="${matchInfo.info.gameDuration / 60 + '분'}"
+            >
+              게임 시간
+            </div>
           </div>
         </div>
-
         <div class="teams-container">
           <div>
             <div
@@ -44,7 +44,6 @@
             ></div>
           </div>
         </div>
-
         <style>
           .match-info {
             background: white;
@@ -56,9 +55,22 @@
 
           .match-header {
             display: flex;
-            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
             padding-bottom: 1rem;
             border-bottom: 1px solid #eee;
+            font-size: 1.2rem;
+          }
+
+          .game-time-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+          }
+
+          .game-time,
+          .game-length {
+            margin-left: 0.5rem;
           }
 
           .teams-container {
@@ -85,7 +97,63 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            padding: 0.5rem;
+          }
+
+          .team-name {
+            font-size: 1.5rem;
+          }
+
+          .team-result {
+            font-size: 1rem;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+          }
+
+          .win-text {
+            color: blue;
+            font-size: 1.2rem;
+            font-weight: bold;
+          }
+
+          .lose-text {
+            color: red;
+            font-size: 1.2rem;
+          }
+
+          .team-stats {
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 1rem;
+          }
+
+          .objective {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+
+          .objective-icon {
+            width: 20px;
+            height: 20px;
+          }
+
+          .team-gold,
+          .team-kills {
+            font-size: 1rem;
+            margin-left: 1rm;
+          }
+
+          .team-info {
+            display: flex;
+            gap: 1rem;
+          }
+
+          .participants {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
           }
 
           .participant {
@@ -97,8 +165,8 @@
           }
 
           .position-icon {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             margin-right: 8px;
           }
 
@@ -135,30 +203,44 @@
 
           .player-info {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            max-width: 120px;
+            white-space: nowrap;
           }
 
           .summoner-name {
             font-weight: 500;
             margin-bottom: 0.25rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
           }
 
           .kda {
-            color: #666;
-            font-size: 0.9rem;
+            display: flex;
+            gap: 0.5rem;
+          }
+
+          .kda-s {
+            padding: 0;
+            margin: 0;
           }
 
           .details {
             display: flex;
-            gap: 12px;
-            color: #666;
-            font-size: 0.8rem;
+            justify-content: space-between;
+            align-items: center;
           }
 
           .items {
             display: flex;
-            gap: 4px;
+            width: 180px;
             flex-wrap: wrap;
-            max-width: 180px;
+            gap: 4px;
           }
 
           .item-image {
@@ -174,8 +256,16 @@
             border: 1px solid #ffd700;
           }
 
+          .item-row {
+            display: flex;
+            gap: 4px;
+          }
+
           .damage-info {
-            width: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45px;
           }
 
           .damage-bar {
@@ -201,6 +291,7 @@
           .damage-text {
             font-size: 0.8rem;
             color: #666;
+            margin-bottom: 5px;
           }
         </style>
       </div>
