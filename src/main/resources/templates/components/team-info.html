@@ -83,18 +83,27 @@
                 <span th:text="${participant.kills}">0</span> /
                 <span th:text="${participant.deaths}">0</span> /
                 <span th:text="${participant.assists}">0</span>
+                <div>
+                  <span
+                    th:text="${participant.deaths > 0 ? #numbers.formatDecimal(1.000 * (participant.kills + participant.assists) / participant.deaths, 1, 2) : '∞'}"
+                    class="kda-value"
+                    >(0.00)</span
+                  >
+                </div>
               </div>
               <div class="details">
-                <span
-                  class="cs"
-                  th:text="${participant.totalMinionsKilled + participant.neutralMinionsKilled + ' CS'}"
-                  >0 CS</span
-                >
-                <span
-                  class="cs-per-minute"
-                  th:text="'(' + ${#numbers.formatDecimal(1.00 * (participant.totalMinionsKilled + participant.neutralMinionsKilled) / gameTime, 1, 1)} + ')'"
-                  >(0.0)</span
-                >
+                <div>
+                  <span
+                    class="cs"
+                    th:text="${participant.totalMinionsKilled + participant.neutralMinionsKilled + ' CS'}"
+                    >0 CS</span
+                  >
+                  <span
+                    class="cs-per-minute"
+                    th:text="'(' + ${#numbers.formatDecimal(1.00 * (participant.totalMinionsKilled + participant.neutralMinionsKilled) / gameTime, 1, 1)} + ')'"
+                    >(0.0)</span
+                  >
+                </div>
                 <span
                   class="gold"
                   th:text="${#numbers.formatInteger(participant.goldEarned / 1000, 1, 'COMMA') + 'k'}"
