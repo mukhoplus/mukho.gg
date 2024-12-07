@@ -56,7 +56,7 @@ com.mukho.mukhogg/
 │           └── ...
 ├── dto/
 │   ├── DataDragonUtil.java (이미지 API 호출 Util)
-│   └── DataMappingUtil.java (이미지 정보 매핑 Util)
+│   └── DataMappingUtil.java (이미지 등 정보 매핑 Util)
 └── resources/
     ├── templates/
     │   └── main.html (메인 페이지 템플릿)

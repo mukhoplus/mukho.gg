@@ -57,4 +57,11 @@ public class DataMappingUtil {
         put(8300, "7203_Whimsy.png");
         put(8400, "7204_Resolve.png");
     }};
+
+    public static final Map<Integer, String> GAME_TYPE = new HashMap<>() {{
+        put(400, "일반");
+        put(420, "솔로랭크");
+        put(430, "일반");
+        put(440, "자유랭크");
+    }};
 }

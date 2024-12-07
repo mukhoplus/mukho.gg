@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <body>
-    <div th:fragment="teamInfo(teamId, team, participants, teamGold)">
+    <div
+      th:fragment="teamInfo(teamId, team, participants, teamGold, teamMaxDealt, gameTime)"
+    >
       <div class="team" th:class="${teamId == 100 ? 'blue-team' : 'red-team'}">
         <div class="team-header">
           <h3 th:text="${teamId == 100 ? '블루팀' : '레드팀'}"></h3>
@@ -33,22 +35,18 @@
             </div>
           </div>
         </div>
-
         <div class="participants">
           <div
             th:each="participant : ${participants}"
             th:if="${participant.teamId == teamId}"
             class="participant"
           >
-            <!-- 라인 아이콘 -->
             <div class="position-icon">
               <img
                 th:src="${@dataDragonUtil.getLaneImageUrl(participant.teamPosition)}"
                 class="position-image"
               />
             </div>
-
-            <!-- 챔피언 정보 -->
             <div class="champion-info">
               <img
                 th:src="${@dataDragonUtil.getChampionImageUrl(participant.championName)}"
@@ -75,8 +73,6 @@
                 />
               </div>
             </div>
-
-            <!-- 플레이어 정보 -->
             <div class="player-info">
               <span
                 class="summoner-name"
@@ -95,14 +91,17 @@
                   >0 CS</span
                 >
                 <span
+                  class="cs-per-minute"
+                  th:text="'(' + ${#numbers.formatDecimal(1.00 * (participant.totalMinionsKilled + participant.neutralMinionsKilled) / gameTime, 1, 1)} + ')'"
+                  >(0.0)</span
+                >
+                <span
                   class="gold"
                   th:text="${#numbers.formatInteger(participant.goldEarned / 1000, 1, 'COMMA') + 'k'}"
                   >0k</span
                 >
               </div>
             </div>
-
-            <!-- 아이템 빌드 -->
             <div class="items">
               <img
                 th:if="${participant.item0}"
@@ -140,14 +139,18 @@
                 class="ward-image"
               />
             </div>
-
-            <!-- 데미지 정보 -->
             <div class="damage-info">
               <span
                 class="damage-text"
                 th:text="${#numbers.formatInteger(participant.totalDamageDealtToChampions, 1, 'COMMA')}"
                 >0</span
               >
+            </div>
+            <div class="damage-bar">
+              <div
+                th:class="${teamId == 100 ? 'damage-fill-blue' : 'damage-fill-red'}"
+                th:style="'width: ' + (${teamMaxDealt > 0 ? (100 * participant.totalDamageDealtToChampions / teamMaxDealt) : 0}) + '%; height: 100%;'"
+              ></div>
             </div>
           </div>
         </div>
