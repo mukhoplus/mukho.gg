@@ -63,5 +63,6 @@ public class DataMappingUtil {
         put(420, "솔로랭크");
         put(430, "일반");
         put(440, "자유랭크");
+        put(490, "일반");
     }};
 }
