@@ -20,11 +20,7 @@ public class MukhoggController {
 
     @GetMapping("/")
     public String mainPage(Model model) {
-        model.addAttribute("summonerInfo", null);
-        model.addAttribute("matchInfo", null);
-        model.addAttribute("timelineInfo", null);
-        model.addAttribute("blueTeamGold", 0);
-        model.addAttribute("redTeamGold", 0);
+        initModels(model);
         return "main";
     }
 
@@ -52,15 +48,19 @@ public class MukhoggController {
             model.addAttribute("blueTeamGold", blueTeamGold);
             model.addAttribute("redTeamGold", redTeamGold);
         } catch (Exception e) {
+            initModels(model);
             System.err.println(e.getMessage());
-            model.addAttribute("summonerInfo", null);
-            model.addAttribute("matchInfo", null);
-            model.addAttribute("timelineInfo", null);
-            model.addAttribute("blueTeamGold", 0);
-            model.addAttribute("redTeamGold", 0);
             model.addAttribute("error", "소환사를 찾을 수 없습니다.");
         }
         
         return "main";
+    }
+
+    private void initModels(Model model) {
+        model.addAttribute("summonerInfo", null);
+        model.addAttribute("matchInfo", null);
+        model.addAttribute("timelineInfo", null);
+        model.addAttribute("blueTeamGold", 0);
+        model.addAttribute("redTeamGold", 0);
     }
 }
