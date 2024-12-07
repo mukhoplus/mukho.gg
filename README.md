@@ -30,8 +30,8 @@
 #### 통계
 
 - 매치 지표에 대한 다양한 그래프 정보 제공
-- 매치 시간대별 킬, 타워, 오브젝트 정보와 골드 차이를 보여주는 그래프 제공
-  - 어떤 시간대에 매치의 유불리가 가장 크게 변화하였는지 텍스트로 제공
+- ~~매치 시간대별 킬, 타워, 오브젝트 정보와 골드 차이를 보여주는 그래프 제공~~
+  - ~~어떤 시간대에 매치의 유불리가 가장 크게 변화하였는지 텍스트로 제공~~
 
 ## 프로젝트 구조
 
@@ -54,7 +54,7 @@ com.mukho.mukhogg/
 │       └── timeline/ (타임라인 정보 DTO)
 │           └── TimelineDto.java
 │           └── ...
-├── dto/
+├── util/
 │   ├── DataDragonUtil.java (이미지 API 호출 Util)
 │   └── DataMappingUtil.java (이미지 등 정보 매핑 Util)
 └── resources/
@@ -63,6 +63,7 @@ com.mukho.mukhogg/
     │   └── components/
     │       ├── header.html (로고 및 검색창 표시 템플릿)
     │       ├── empty-state.html (첫 화면용 템플릿)
+    │       ├── toogle-tabs.html (토글 템플릿)
     │       ├── match-info.html (매치 정보 표시 템플릿)
     │       ├── team-info.html (팀별 정보 표시 템플릿)
     │       └── match-stats.html (통계 정보 표시 템플릿)
