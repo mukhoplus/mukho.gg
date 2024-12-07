@@ -38,7 +38,7 @@ public class MukhoggServiceImpl implements MukhoggService{
             String url = String.format("https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s?api_key=%s", gameName, tagLine, riotApiKey);
             summonerInfo = restTemplate.getForObject(url, AccountDto.class);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            // System.err.println(e.getMessage());
         }
 
         return summonerInfo;
@@ -52,7 +52,7 @@ public class MukhoggServiceImpl implements MukhoggService{
             List<String> matchIds = getMatchIds(puuid);
             matchInfo = getLastMatchInfo(matchIds);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            // System.err.println(e.getMessage());
         }
         
         return matchInfo;
@@ -66,7 +66,7 @@ public class MukhoggServiceImpl implements MukhoggService{
             String url = String.format("https://asia.api.riotgames.com/lol/match/v5/matches/%s/timeline?api_key=%s", matchId, riotApiKey);
             timelineInfo = restTemplate.getForObject(url, TimelineDto.class);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            // System.err.println(e.getMessage());
         }
         
         return timelineInfo;
@@ -105,7 +105,7 @@ public class MukhoggServiceImpl implements MukhoggService{
             String url = String.format("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=100&api_key=%s", puuid, riotApiKey);
             matchIds = restTemplate.getForObject(url, List.class);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            // System.err.println(e.getMessage());
         }
         
         return matchIds;
@@ -125,7 +125,7 @@ public class MukhoggServiceImpl implements MukhoggService{
                 return matchInfo;
             }
         } catch (Exception e) {
-            System.err.println("매치 정보를 불러오는 중 오류 발생: " + e.getMessage());
+            // System.err.println("매치 정보를 불러오는 중 오류 발생: " + e.getMessage());
         }
         return null;
     }
@@ -150,7 +150,7 @@ public class MukhoggServiceImpl implements MukhoggService{
                 throw new Exception("최근 소환사의 협곡 매치 기록이 없습니다.");
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            // System.err.println(e.getMessage());
         }
 
         return lastMatchInfo;
