@@ -85,6 +85,19 @@ public class MukhoggServiceImpl implements MukhoggService{
         return String.format("%.1f K", totalGold / 1_000.0);
     }
 
+    @Override
+    public int getTeamMaxDealt(List<ParticipantDto> participants, int teamId) {
+        int teamMaxDealt = 0;
+
+        for (ParticipantDto participant : participants) {
+            if (participant.getTeamId() == teamId) {
+                teamMaxDealt = Math.max(teamMaxDealt, participant.getTotalDamageDealtToChampions());
+            }
+        }
+
+        return teamMaxDealt;
+    }
+
     private List<String> getMatchIds(String puuid) {
         List<String> matchIds= null;
 

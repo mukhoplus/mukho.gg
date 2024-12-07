@@ -12,4 +12,5 @@ public interface MukhoggService {
     MatchDto getMatchInfo(String puuid);
     TimelineDto getTimelineDto(String matchId);
     String getTotalGold(List<ParticipantDto> participants, int teamId);
+    int getTeamMaxDealt(List<ParticipantDto> participants, int teamId);
 }

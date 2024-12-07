@@ -15,7 +15,7 @@
       <div th:if="${matchInfo != null}" class="match-content">
         <!-- 매치 기본 정보 -->
         <div class="match-header">
-          <div class="game-type" th:text="${matchInfo.info.queueId}">
+          <div class="game-type" th:text="${gameType[matchInfo.info.queueId]}">
             게임 타입
           </div>
           <div
@@ -35,12 +35,12 @@
         <div class="teams-container">
           <div>
             <div
-              th:replace="~{components/team-info :: teamInfo(teamId=100, team=${matchInfo.info.teams[0]}, participants=${matchInfo.info.participants}, teamGold=${blueTeamGold})}"
+              th:replace="~{components/team-info :: teamInfo(teamId=100, team=${matchInfo.info.teams[0]}, participants=${matchInfo.info.participants}, teamGold=${blueTeamGold}, teamMaxDealt=${blueTeamMaxDealt}, gameTime=${matchInfo.info.gameDuration / 60})}"
             ></div>
           </div>
           <div>
             <div
-              th:replace="~{components/team-info :: teamInfo(teamId=200, team=${matchInfo.info.teams[1]}, participants=${matchInfo.info.participants}, teamGold=${redTeamGold})}"
+              th:replace="~{components/team-info :: teamInfo(teamId=200, team=${matchInfo.info.teams[1]}, participants=${matchInfo.info.participants}, teamGold=${redTeamGold}, teamMaxDealt=${redTeamMaxDealt}, gameTime=${matchInfo.info.gameDuration / 60})}"
             ></div>
           </div>
         </div>
@@ -179,15 +179,23 @@
           }
 
           .damage-bar {
-            height: 4px;
+            width: 100%;
+            height: 10px;
             background: #eee;
-            border-radius: 2px;
+            border-radius: 5px;
             overflow: hidden;
           }
 
-          .damage-fill {
+          .damage-fill-blue {
             height: 100%;
             background: #5383e8;
+            transition: width 0.3s;
+          }
+
+          .damage-fill-red {
+            height: 100%;
+            background: #ff0000;
+            transition: width 0.3s;
           }
 
           .damage-text {
