@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <body>
-    <div th:fragment="match-stats" class="match-stats">
+    <div
+      id="matchStats"
+      th:if="${matchInfo != null}"
+      th:fragment="match-stats"
+      class="match-stats tab-content-item"
+    >
       <!-- 매치 정보가 없을 때 -->
       <div th:if="${matchInfo == null}" class="no-match-info">
         <p>통계를 표시할 수 없습니다.</p>

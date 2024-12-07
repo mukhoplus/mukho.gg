@@ -9,6 +9,37 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      function showTab(tabName) {
+        // 모든 탭 콘텐츠 숨기기
+        const contents = document.querySelectorAll(".tab-content-item");
+        contents.forEach((content) => {
+          content.classList.remove("active");
+        });
+
+        // 모든 탭 버튼 비활성화
+        const buttons = document.querySelectorAll(".tab-button");
+        buttons.forEach((button) => {
+          button.classList.remove("active");
+        });
+
+        // 선택한 탭 콘텐츠 표시
+        const activeContent = document.getElementById(tabName);
+        if (activeContent) {
+          activeContent.classList.add("active");
+        } else {
+          console.error(`Tab with id "${tabName}" not found.`);
+        }
+
+        // 선택한 탭 버튼 활성화
+        const activeButton = document.getElementById(tabName + "Btn");
+        if (activeButton) {
+          activeButton.classList.add("active");
+        } else {
+          console.error(`Button for tab "${tabName}Btn" not found.`);
+        }
+      }
+    </script>
     <style>
       body {
         zoom: 0.8;
@@ -24,13 +55,41 @@
         margin: 80px auto 0;
         padding: 2rem;
       }
+
+      .tab-header {
+        display: flex;
+        justify-content: center;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .tab-button {
+        background: none;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 0 10px;
+      }
+
+      .tab-button.active {
+        font-weight: bold;
+        border-bottom: 2px solid #007bff;
+      }
+
+      .tab-content-item {
+        display: none;
+      }
+
+      .tab-content-item.active {
+        display: block;
+      }
     </style>
   </head>
   <body>
     <div th:replace="~{components/header :: header}"></div>
     <div class="main-container">
       <div th:replace="~{components/empty-state :: empty-state}"></div>
-      <div th:replace="~{components/match-info :: match-info}"></div>
+      <div th:replace="~{components/toggle-tabs :: toggle-tabs}"></div>
     </div>
   </body>
 </html>
