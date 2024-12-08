@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.mukho.mukhogg.dto.account.AccountDto;
-import com.mukho.mukhogg.dto.matches.match.InfoDto;
 import com.mukho.mukhogg.dto.matches.match.MatchDto;
 import com.mukho.mukhogg.dto.matches.match.ParticipantDto;
 import com.mukho.mukhogg.dto.matches.timeline.TimelineDto;
